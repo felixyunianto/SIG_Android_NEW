@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.dwiky.sigpertanian.ui.fragments.home.HomeFragment"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/navigation_comodity"
+        android:name="com.dwiky.sigpertanian.ui.fragments.comodity.ComodityFragment"
+        tools:layout="@layout/fragment_comodity"/>
+
+    <fragment
+        android:id="@+id/navigation_agriculture"
+        android:name="com.dwiky.sigpertanian.ui.fragments.agriculture.AgricultureFragment"
+        tools:layout="@layout/fragment_agriculture"/>
+
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.dwiky.sigpertanian.ui.fragments.account.AccountFragment"
+        tools:layout="@layout/fragment_account"/>
+
+</navigation>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.325" />
+        <entry key="../../../../.gradle/caches/transforms-3/46d15f5c58a469270eeba15db4463d05/transformed/appcompat-1.4.0/res/drawable/abc_btn_default_mtrl_shape.xml" value="0.3260416666666667" />
+        <entry key="../../../../Library/Android/sdk/platforms/android-32/data/res/drawable/btn_default.xml" value="0.3260416666666667" />
+        <entry key="../../../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_dropdown_item_1line.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/drawable/background_bottom_navigation.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/bg_transparent.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/bottom_navigation_background.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/rounded_bottom.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable/shadow_top.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable/spinner.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/layout/activity_agriculture_management.xml" value="0.24938610800254962" />
+        <entry key="app/src/main/res/layout/activity_comodity_management.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_location_picker.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/agriculture_item_list.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/comodity_item_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_agriculture.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_comodity.xml" value="0.2994011976047904" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.3098958333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
