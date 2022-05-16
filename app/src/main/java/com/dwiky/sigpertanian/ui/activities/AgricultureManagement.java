@@ -24,15 +24,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dwiky.sigpertanian.R;
 import com.dwiky.sigpertanian.contracts.AgricultureContracts;
 import com.dwiky.sigpertanian.databinding.ActivityAgricultureManagementBinding;
 import com.dwiky.sigpertanian.models.Agriculture;
+import com.dwiky.sigpertanian.models.Comoditas;
 import com.dwiky.sigpertanian.models.District;
 import com.dwiky.sigpertanian.models.SubDistrict;
 import com.dwiky.sigpertanian.presenters.AgricultureManagementPresenter;
 import com.dwiky.sigpertanian.utilities.UploadImage;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,17 +52,23 @@ import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class AgricultureManagement extends AppCompatActivity implements AgricultureContracts.AgricultureManagementView {
+public class AgricultureManagement extends AppCompatActivity implements AgricultureContracts.AgricultureManagementView, OnMapReadyCallback {
     ActivityAgricultureManagementBinding binding;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     UploadImage uploadImage = new UploadImage(this);
     File imageUri;
+
 
     AgricultureManagementPresenter presenter;
 
     SubDistrict selectedSubDistrict;
     District selectedDistrict;
 
+    String latitude;
+    String longitude;
+
+    GoogleMap myMap;
+    SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,18 +85,32 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
             }
         });
 
-
-
-//        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(checkAndRequestPermissions(AgricultureManagement.this)){
-//                    uploadImage.chooseImage(AgricultureManagement.this);
-//                }
-//            }
-//        });
+        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkAndRequestPermissions(AgricultureManagement.this)){
+                    uploadImage.chooseImage(AgricultureManagement.this);
+                }
+            }
+        });
 
         doSave();
+
+        filled();
+
+        if (myMap == null) {
+            mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(googleMap -> {
+                myMap = googleMap;
+
+                if(!isNew()){
+                    myMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(agricultureData().getLatitude()), Double.parseDouble(agricultureData().getLongitude()))));
+                    myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                            Double.parseDouble(agricultureData().getLatitude()), Double.parseDouble(agricultureData().getLongitude())),12f)
+                    );
+                }
+            });
+        }
     }
 
     public void goBack() {
@@ -114,8 +144,6 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
         return true;
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -146,14 +174,21 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
+
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-//                        binding.imageView.setImageBitmap(selectedImage);
+                        binding.btnUpload.setImageBitmap(selectedImage);
+
+                        Uri tempUri = getImageUri(getApplicationContext(), selectedImage);
+                        File finalFile = new File(getRealPathFromURI(tempUri));
+
+                        imageUri = finalFile;
+
                     }
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
+
                         Uri selectedImage = data.getData();
-                        System.out.println("DATA"+ data);
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
                             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -165,12 +200,30 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
                                 System.out.println("IMAGE " + imageFile);
 
                                 imageUri = imageFile;
-//                                binding.imageView.setImageURI(selectedImage);
+                                binding.btnUpload.setImageURI(selectedImage);
 
                                 cursor.close();
                             }
                         }
 
+                    }
+                    break;
+
+                case 2 :
+                    if(resultCode == Activity.RESULT_OK){
+                        String intentLat = data.getStringExtra("LATITUDE");
+                        String intentLng = data.getStringExtra("LONGITUDE");
+
+                        latitude = intentLat;
+                        longitude = intentLng;
+
+                        myMap.clear();
+                        myMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(intentLat), Double.parseDouble(intentLng))));
+                        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                                Double.parseDouble(intentLat), Double.parseDouble(intentLng)),12f)
+                        );
+
+                        System.out.println("LATLONG " + latitude + " " + longitude);
                     }
                     break;
             }
@@ -180,9 +233,9 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
     @Override
     public void attachSpinnerSubDistrict(List<SubDistrict> sub_districts) {
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this, R.layout.spinner_item, sub_districts);
-//        if(!isNew()){
-//            binding.subDistrictSpinner.setText(comodityData().getDesa().toLowerCase());
-//        }
+        if(!isNew()){
+            binding.subDistrictSpinner.setText(agricultureData().getDesa().toLowerCase());
+        }
         binding.subDistrictSpinner.setAdapter(spinnerAdapter);
 
         binding.subDistrictSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -199,14 +252,9 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
     public void attachSpinnerDistrict(List<District> districts) {
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this, R.layout.spinner_item, districts);
 
-//        if(!isNew()){
-//            for (int i = 0; i < districts.size(); i++){
-//                if(districts.get(i).getKecamatan() == comodityData().getKecamatan().toLowerCase()){
-//                    selectedDistrict = districts.get(i);
-//                }
-//            }
-//            binding.districtSpinner.setText(comodityData().getKecamatan().toLowerCase());
-//        }
+        if(!isNew()){
+            binding.districtSpinner.setText(agricultureData().getKecamatan().toLowerCase());
+        }
 
         binding.districtSpinner.setAdapter(spinnerAdapter);
 
@@ -241,49 +289,67 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 RequestBody namapemilik = RequestBody.create(
-                        MultipartBody.FORM, "Dwiky"
+                        MultipartBody.FORM, binding.etNamaPemilik.getText().toString().trim()
                 );
 
                 RequestBody luas = RequestBody.create(
-                        MultipartBody.FORM, "200"
+                        MultipartBody.FORM, binding.etLuas.getText().toString().trim()
                 );
 
                 RequestBody meter = RequestBody.create(
-                        MultipartBody.FORM, "200 m2"
+                        MultipartBody.FORM, binding.etMeter.getText().toString().trim()
                 );
 
                 RequestBody desa = RequestBody.create(
-                        MultipartBody.FORM, "Desa"
+                        MultipartBody.FORM, selectedSubDistrict != null ? selectedSubDistrict.toString() : agricultureData().getDesa()
                 );
 
                 RequestBody kecamatan = RequestBody.create(
-                        MultipartBody.FORM, "Kecamatan"
+                        MultipartBody.FORM, selectedDistrict != null ? selectedDistrict.toString() : agricultureData().getKecamatan()
                 );
 
-                RequestBody latitude = RequestBody.create(
-                        MultipartBody.FORM, "123456"
+                RequestBody reqLatitude = RequestBody.create(
+                        MultipartBody.FORM, latitude
                 );
 
-                RequestBody longitude = RequestBody.create(
-                        MultipartBody.FORM, "123456"
+                RequestBody reqLongitude = RequestBody.create(
+                        MultipartBody.FORM, longitude
                 );
 
-                File originalFile = new File(imageUri.getPath());
+                File originalFile = null;
+                RequestBody imagePart= null;
+                MultipartBody.Part foto= null;
+
+                if(imageUri != null){
+                    originalFile = new File(imageUri.getAbsolutePath());
+
+                    imagePart = RequestBody.create(
+                            MediaType.parse("image/*"),
+                            originalFile
+                    );
+
+                    foto = MultipartBody.Part.createFormData(
+                            "foto",
+                            originalFile.getName(),
+                            imagePart
+                    );
+                }
 
 
-                RequestBody imagePart = RequestBody.create(
-                        MediaType.parse("image/*"),
-                        originalFile
-                );
+                if(isNew()){
+                    presenter.create(namapemilik,luas,meter,desa,kecamatan, reqLatitude,reqLongitude,foto);
+                }else{
+                    int idLahan = Integer.parseInt(agricultureData().getId_lahan());
+                    System.out.println("ID LAHAN " + idLahan);
+                    if(imageUri == null){
+                        presenter.updateWithoutPhoto(idLahan, namapemilik,luas,meter,desa,kecamatan, reqLatitude, reqLongitude);
+                    }else{
+                        presenter.update(idLahan, namapemilik,luas,meter,desa,kecamatan, reqLatitude,reqLongitude,foto );
+                    }
 
-                MultipartBody.Part foto = MultipartBody.Part.createFormData(
-                        "foto",
-                        originalFile.getName(),
-                        imagePart
-                );
-
-                presenter.create(namapemilik,luas,meter,desa,kecamatan, latitude,longitude,foto);
+                }
 
             }
         });
@@ -306,4 +372,66 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
         presenter.destroy();
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        String path = "";
+        if (getContentResolver() != null) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return path;
+    }
+
+    public boolean isNew(){
+        return getIntent().getBooleanExtra("isNew", true);
+    }
+
+    public Agriculture agricultureData() {
+        Gson gson = new Gson();
+        String agricultureAsString = getIntent().getStringExtra("AGRICULTURE");
+        Agriculture agriculture = gson.fromJson(agricultureAsString, Agriculture.class);
+
+        return agriculture;
+    }
+
+    private void filled(){
+        if(!isNew()){
+            binding.etNamaPemilik.setText(agricultureData().getNamapemilik());
+            binding.etLuas.setText(agricultureData().getLuas());
+            binding.etMeter.setText(agricultureData().getMeter().split(" ")[0]);
+            latitude = agricultureData().getLatitude();
+            longitude = agricultureData().getLongitude();
+            Glide.with(this).load(agricultureData().getFoto()).into(binding.btnUpload);
+            binding.btnPickMap.setText("UBAH LOKASI");
+        }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        myMap = googleMap;
+        if(ActivityCompat.checkSelfPermission(
+                AgricultureManagement.this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                AgricultureManagement.this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+        ){
+            return;
+        }
+
+            myMap.isMyLocationEnabled();
+
+    }
 }

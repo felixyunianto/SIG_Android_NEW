@@ -82,7 +82,7 @@ public class Agriculture {
     @SerializedName("desa") public String desa;
     @SerializedName("kecamatan") public String kecamatan;
     @SerializedName("latitude") public String latitude;
-    @SerializedName("longitude") public String longitude;
+    @SerializedName("longtitude") public String longitude;
     @SerializedName("foto") public String foto;
 
 }

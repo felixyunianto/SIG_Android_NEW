@@ -107,8 +107,60 @@ public class AgricultureManagementPresenter implements AgricultureContracts.Agri
     }
 
     @Override
-    public void update(String id, RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude, MultipartBody.Part foto) {
+    public void update(int id, RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude, MultipartBody.Part foto) {
+        apiServices.update(id, namapemilik, luas, meter, desa, kecamatan, latitude, longitude, foto)
+                .enqueue(new Callback<WrappedResponse<Agriculture>>() {
+                    @Override
+                    public void onResponse(Call<WrappedResponse<Agriculture>> call, Response<WrappedResponse<Agriculture>> response) {
+                        if(response.isSuccessful()){
+                            WrappedResponse body = response.body();
+                            if(body != null){
+                                view.toast(body.getPesan());
+                                view.success();
+                            }else{
+                                view.toast(body.getPesan());
+                            }
+                        }else{
+                            view.toast(response.message());
+                        }
+                        view.loading(false);
+                    }
 
+                    @Override
+                    public void onFailure(Call<WrappedResponse<Agriculture>> call, Throwable t) {
+                        System.out.println("Terjadi kesalahan " + t.getMessage());
+                        view.loading(false);
+                    }
+                });
+    }
+
+    @Override
+    public void updateWithoutPhoto(int id, RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude) {
+        System.out.println("ID IN PRESENTER " + id);
+        apiServices.updateWithoutPhoto(id, namapemilik, luas, meter, desa, kecamatan, latitude, longitude)
+                .enqueue(new Callback<WrappedResponse<Agriculture>>() {
+                    @Override
+                    public void onResponse(Call<WrappedResponse<Agriculture>> call, Response<WrappedResponse<Agriculture>> response) {
+                        if(response.isSuccessful()){
+                            WrappedResponse body = response.body();
+                            if(body != null){
+                                view.toast(body.getPesan());
+                                view.success();
+                            }else{
+                                view.toast(body.getPesan());
+                            }
+                        }else{
+                            view.toast(response.message());
+                        }
+                        view.loading(false);
+                    }
+
+                    @Override
+                    public void onFailure(Call<WrappedResponse<Agriculture>> call, Throwable t) {
+                        System.out.println("Terjadi kesalahan " + t.getMessage());
+                        view.loading(false);
+                    }
+                });
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.dwiky.sigpertanian.responses.WrappedListResponse;
 import com.dwiky.sigpertanian.responses.WrappedResponse;
 
 import okhttp3.MultipartBody;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -19,6 +20,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface APIServices{
     // Komoditas
@@ -56,7 +58,9 @@ public interface APIServices{
 
     //Lahan Pertanian
     @GET("LahanPetani")
-    Call<WrappedListResponse<Agriculture>> fetchAgriculture();
+    Call<WrappedListResponse<Agriculture>> fetchAgriculture(
+            @Query("id") String id
+    );
 
     @Multipart
     @POST("LahanPetani")
@@ -71,8 +75,37 @@ public interface APIServices{
             @Part final MultipartBody.Part foto
     );
 
+    @Multipart()
+    @POST("LahanPetani/{id}")
+    Call<WrappedResponse<Agriculture>> update(
+            @Path("id") final int id,
+            @Part("namapemilik") final RequestBody namapemilik,
+            @Part("luas") final RequestBody luas,
+            @Part("meter") final RequestBody meter,
+            @Part("desa") final RequestBody desa,
+            @Part("kecamatan") final RequestBody kecamatan,
+            @Part("latitude") final RequestBody latitude,
+            @Part("longitude") final RequestBody longitude,
+            @Part final MultipartBody.Part foto
+    );
 
+    @Multipart()
+    @POST("LahanPetani/{id}")
+    Call<WrappedResponse<Agriculture>> updateWithoutPhoto(
+            @Path("id") final int id,
+            @Part("namapemilik") final RequestBody namapemilik,
+            @Part("luas") final RequestBody luas,
+            @Part("meter") final RequestBody meter,
+            @Part("desa") final RequestBody desa,
+            @Part("kecamatan") final RequestBody kecamatan,
+            @Part("latitude") final RequestBody latitude,
+            @Part("longitude") final RequestBody longitude
+    );
 
+    @DELETE("LahanPetani/{id}")
+    Call<WrappedResponse<Agriculture>> delete(
+            @Path("id") final int id
+    );
 
 
 

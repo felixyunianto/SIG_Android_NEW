@@ -1,6 +1,8 @@
 package com.dwiky.sigpertanian.utilities;
 
 import com.dwiky.sigpertanian.webservices.APIServices;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,10 +23,13 @@ public class APIClient {
     }
 
     public static Retrofit getClient(){
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         if (retrofit == null){
             retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.API_ENDPOINT)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
 

@@ -26,10 +26,23 @@ public class WrappedResponse<T> {
     }
 
     public void setData(T data) {
+        if(data.getClass().getName() == "String"){
+            return;
+        }
         this.data = data;
     }
 
     @SerializedName("error") private boolean error;
     @SerializedName("pesan") private String pesan;
-    @SerializedName("data") private T data;
+    @SerializedName("data") private T data = null;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @SerializedName("message") private String message;
 }

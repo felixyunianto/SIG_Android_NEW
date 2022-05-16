@@ -8,6 +8,16 @@ import java.util.List;
 public class  WrappedListResponse <T> {
     @SerializedName("error") private boolean error;
     @SerializedName("pesan") private String pesan;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @SerializedName("message") private String message;
     @SerializedName("data") private List<T> data = new ArrayList<>();
 
     public boolean isError() {

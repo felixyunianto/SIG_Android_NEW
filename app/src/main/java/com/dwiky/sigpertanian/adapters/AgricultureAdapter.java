@@ -1,10 +1,12 @@
 package com.dwiky.sigpertanian.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.dwiky.sigpertanian.R;
 import com.dwiky.sigpertanian.models.Agriculture;
+import com.dwiky.sigpertanian.ui.activities.AgricultureDetailActivity;
 
 import java.util.List;
 
@@ -46,6 +49,12 @@ public class AgricultureAdapter extends RecyclerView.Adapter<AgricultureAdapter.
         Glide.with(context)
                 .load(agriculture.getFoto())
                 .into(holder.ivFoto);
+
+        holder.btnDetail.setOnClickListener(view -> {
+            Intent intent = new Intent(context, AgricultureDetailActivity.class);
+            intent.putExtra("ID_LAHAN", agriculture.getId_lahan().toString());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -56,13 +65,17 @@ public class AgricultureAdapter extends RecyclerView.Adapter<AgricultureAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNamaPemilik, tvLuasMeter, tvDesaKecamatan;
         ImageView ivFoto;
-
+        Button btnDetail;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNamaPemilik = itemView.findViewById(R.id.nama_pemilik);
             tvLuasMeter = itemView.findViewById(R.id.luas_meter);
             tvDesaKecamatan = itemView.findViewById(R.id.desa_kecamatan);
             ivFoto = itemView.findViewById(R.id.ivFoto);
+            btnDetail = itemView.findViewById(R.id.btnDetail);
+
+
+
         }
     }
 }

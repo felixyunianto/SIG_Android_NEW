@@ -67,6 +67,11 @@ public class AgricultureFragment extends Fragment implements AgricultureContract
     }
 
     @Override
+    public void attachDetailView(Agriculture agriculture) {
+
+    }
+
+    @Override
     public void toast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }

@@ -1,10 +1,14 @@
 package com.dwiky.sigpertanian.ui.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -55,9 +59,8 @@ public class LocationPicker extends AppCompatActivity implements OnMapReadyCallb
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
-            LatLng myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            myMap.addMarker(new MarkerOptions().position(myCurrentLocation).title("My Now Location"));
-            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myCurrentLocation, 15f));
+//            LatLng myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-6.892344, 109.026947), 15f));
         });
 
 
@@ -68,6 +71,10 @@ public class LocationPicker extends AppCompatActivity implements OnMapReadyCallb
         myMap.clear();
         myMap.addMarker(new MarkerOptions().position(new LatLng(latLng.latitude, latLng.longitude)));
 
+        showAlertDialog(
+                "Apakah koordinat telah benar?",
+                new LatLng(latLng.latitude, latLng.longitude)
+        );
     }
 
     @Override
@@ -92,5 +99,30 @@ public class LocationPicker extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void showAlertDialog(String message, LatLng latLng){
+        AlertDialog alertDialog = new AlertDialog.Builder(LocationPicker.this).create();
+        alertDialog.setTitle("Confirm");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(LocationPicker.this, AgricultureManagement.class);
+                        intent.putExtra("LATITUDE", String.valueOf(latLng.latitude));
+                        intent.putExtra("LONGITUDE", String.valueOf(latLng.longitude));
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Batal",
+                new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+        alertDialog.show();
     }
 }

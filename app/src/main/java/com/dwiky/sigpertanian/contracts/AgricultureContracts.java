@@ -12,12 +12,14 @@ import okhttp3.RequestBody;
 public interface AgricultureContracts {
     interface AgricultureView{
         void attachToRecyclerView(List<Agriculture> agricultures);
+        void attachDetailView(Agriculture agriculture);
         void toast(String message);
         boolean loading(boolean loading);
     }
 
     interface AgriculturePresenter{
         void fetchAgriculture();
+        void fetchDetail(String id);
         void delete(String id_lahan);
         void destroy();
     }
@@ -34,7 +36,9 @@ public interface AgricultureContracts {
         void fetchSubDistrict();
         void fetchDistrict();
         void create(RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude, MultipartBody.Part foto);
-        void update(String id, RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude, MultipartBody.Part foto);
+
+        void update(int id, RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude, MultipartBody.Part foto);
+        void updateWithoutPhoto(int id, RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude);
         void destroy();
     }
 }

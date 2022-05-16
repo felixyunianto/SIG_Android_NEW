@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Constants {
-    public static final String API_ENDPOINT = "http://192.168.113.10/SIGPertanianAndroid/api/";
+    public static final String API_ENDPOINT = "http://192.168.1.123/SIGPertanianAndroid/api/";
 
     public static final String converDateToSave(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
