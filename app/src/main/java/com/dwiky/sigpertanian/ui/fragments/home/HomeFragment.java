@@ -43,7 +43,9 @@ public class HomeFragment extends Fragment {
         Gson gson = new Gson();
         user = gson.fromJson(dataUser, User.class);
 
-        binding.tvName.setText(user.getFullname());
+        if(dataUser != null){
+            binding.tvName.setText(user.getFullname());
+        }
     }
 
     public void clickAgriculture(){

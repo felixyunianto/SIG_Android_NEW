@@ -45,6 +45,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/xml/network_security_config.xml" value="0.16770833333333332" />
       </map>
     </option>
   </component>
