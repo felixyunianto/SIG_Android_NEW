@@ -14,13 +14,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
     private static Retrofit retrofit = null;
+    private static Retrofit retrofit1 = null;
     public static OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).build();
 
     public APIServices apiServices(){
         return getClient().create(APIServices.class);
-
     }
+
+    public APIServices apiServicesAuth(){
+        return getClientAuth().create(APIServices.class);
+    }
+
 
     public static Retrofit getClient(){
         Gson gson = new GsonBuilder()
@@ -34,6 +39,20 @@ public class APIClient {
         }
 
         return retrofit;
+    }
+
+    public static Retrofit getClientAuth(){
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        if (retrofit1 == null){
+            retrofit1 = new Retrofit.Builder()
+                    .baseUrl(Constants.API_ENDPOINT_AUTH)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+        }
+
+        return retrofit1;
     }
 }
 

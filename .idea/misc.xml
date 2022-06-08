@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_chevron_right_24.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_grass_100.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/ic_baseline_grass_24.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_menu_book_24.xml" value="0.3260416666666667" />
@@ -22,20 +23,26 @@
         <entry key="app/src/main/res/drawable/ic_baseline_warning_24.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/rounded_bottom.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable/rounded_home.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/shadow_top.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/spinner.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_agriculture_detail.xml" value="0.3009118541033435" />
         <entry key="app/src/main/res/layout/activity_agriculture_management.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_code.xml" value="0.2962962962962963" />
         <entry key="app/src/main/res/layout/activity_comodity_management.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_email.xml" value="0.15052083333333333" />
         <entry key="app/src/main/res/layout/activity_location_picker.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2962962962962963" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_password_activty.xml" value="0.16458333333333333" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/agriculture_item_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/comodity_item_list.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_agriculture.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_comodity.xml" value="0.2994011976047904" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.3098958333333333" />
       </map>

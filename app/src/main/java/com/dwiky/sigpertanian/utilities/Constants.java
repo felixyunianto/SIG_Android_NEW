@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class Constants {
     public static final String API_ENDPOINT = "http://192.168.1.123/SIGPertanianAndroid/api/";
+    public static final String API_ENDPOINT_AUTH = "http://192.168.1.123/SIGPertanianAndroid/android/login/";
 
     public static final String converDateToSave(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

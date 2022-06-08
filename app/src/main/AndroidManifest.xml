@@ -28,6 +28,18 @@
         android:theme="@style/Theme.SIGPertanian"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.activities.PasswordActivty"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.CodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.EmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.AgricultureDetailActivity"
             android:exported="false" />
 

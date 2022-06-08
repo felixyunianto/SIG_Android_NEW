@@ -2,6 +2,8 @@ package com.dwiky.sigpertanian.responses;
 
 import com.google.gson.annotations.SerializedName;
 
+import kotlinx.coroutines.flow.internal.AbortFlowException;
+
 public class WrappedResponse<T> {
     public WrappedResponse(){}
 
@@ -35,6 +37,16 @@ public class WrappedResponse<T> {
     @SerializedName("error") private boolean error;
     @SerializedName("pesan") private String pesan;
     @SerializedName("data") private T data = null;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    @SerializedName("status") private boolean status;
 
     public String getMessage() {
         return message;

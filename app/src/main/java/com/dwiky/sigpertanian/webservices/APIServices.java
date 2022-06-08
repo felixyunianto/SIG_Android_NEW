@@ -4,6 +4,7 @@ import com.dwiky.sigpertanian.models.Agriculture;
 import com.dwiky.sigpertanian.models.Comoditas;
 import com.dwiky.sigpertanian.models.District;
 import com.dwiky.sigpertanian.models.SubDistrict;
+import com.dwiky.sigpertanian.models.User;
 import com.dwiky.sigpertanian.responses.WrappedListResponse;
 import com.dwiky.sigpertanian.responses.WrappedResponse;
 
@@ -23,6 +24,36 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIServices{
+    // Auth
+    @FormUrlEncoded
+    @POST("login.php")
+    Call<WrappedResponse<User>> login(
+            @Field("username") final String username,
+            @Field("password") final String password
+    );
+
+    @FormUrlEncoded
+    @POST("Auth/sendEmailForgot")
+    Call<WrappedResponse<String>> sendEmail(
+            @Field("to") final String to
+    );
+
+    @FormUrlEncoded
+    @POST("Auth/validateToken")
+    Call<WrappedResponse<String>> validateToken(
+            @Field("token") final String token
+    );
+
+    @FormUrlEncoded
+    @POST("Auth/resetPassword")
+    Call<WrappedResponse<String>> resetPassword(
+            @Field("token") final String token,
+            @Field("password") final String password,
+            @Field("cPassword") final String cPassword
+
+    );
+
+
     // Komoditas
     @GET("KomoditasLahan")
     Call<WrappedListResponse<Comoditas>> fetchComodity();

@@ -40,8 +40,6 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
         binding = ActivityComodityManagementBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         presenter = new ComodityManagementPresenter(this);
-
-
         filled();
         goBack();
         binding.etAwal.setOnClickListener(new View.OnClickListener() {
