@@ -24,9 +24,37 @@ public class ComodityManagementPresenter implements ComodityContracts.ComodityMa
     }
 
     @Override
-    public void fetchSubDistrict() {
+    public void fetchSubDistrict(String id_kecamatan) {
         view.loading(true);
-        apiServices.fetchSubDistrict()
+        apiServices.fetchSubDistrict(id_kecamatan)
+                .enqueue(new Callback<WrappedListResponse<SubDistrict>>() {
+                    @Override
+                    public void onResponse(Call<WrappedListResponse<SubDistrict>> call, Response<WrappedListResponse<SubDistrict>> response) {
+                        if(response.isSuccessful()){
+                            WrappedListResponse body = response.body();
+                            if(body != null){
+                                view.toast(body.getPesan());
+                                view.attachSpinnerSubDistrict(body.getData());
+                            }else{
+                                view.toast("Error");
+                            }
+                        }
+                        view.loading(false);
+                    }
+
+                    @Override
+                    public void onFailure(Call<WrappedListResponse<SubDistrict>> call, Throwable t) {
+                        System.out.println("Terjadi kesalahan " + t.getMessage());
+                        view.loading(false);
+
+                    }
+                });
+    }
+
+    @Override
+    public void fetchSubDistrictAll() {
+        view.loading(true);
+        apiServices.fetchSubDistrictAll()
                 .enqueue(new Callback<WrappedListResponse<SubDistrict>>() {
                     @Override
                     public void onResponse(Call<WrappedListResponse<SubDistrict>> call, Response<WrappedListResponse<SubDistrict>> response) {

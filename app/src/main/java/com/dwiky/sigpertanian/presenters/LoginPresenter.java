@@ -31,7 +31,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                             WrappedResponse body = response.body();
                             if(body != null){
                                 if(body.isStatus()){
-                                    view.toast(body.getPesan());
+                                    view.toast(body.getMessage());
                                     view.success((User) body.getData());
                                 }else{
                                     view.toast(body.getMessage());

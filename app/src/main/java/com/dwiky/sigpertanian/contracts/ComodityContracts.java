@@ -28,7 +28,8 @@ public interface ComodityContracts {
     }
 
     interface ComodityManagementPresenter{
-        void fetchSubDistrict();
+        void fetchSubDistrict(String id_kecamatan);
+        void fetchSubDistrictAll();
         void fetchDistrict();
         void create(String namakomoditas, String jumlah, String awal, String akhir, String desa, String kecamatan);
         void update(String id, String namakomoditas, String jumlah, String awal, String akhir, String desa, String kecamatan);

@@ -33,7 +33,8 @@ public interface AgricultureContracts {
     }
 
     interface AgricultureManagementPresenter{
-        void fetchSubDistrict();
+        void fetchSubDistrictAll();
+        void fetchSubDistrict(String id_kecamatan);
         void fetchDistrict();
         void create(RequestBody namapemilik, RequestBody luas, RequestBody meter, RequestBody desa, RequestBody kecamatan, RequestBody latitude, RequestBody longitude, MultipartBody.Part foto);
 

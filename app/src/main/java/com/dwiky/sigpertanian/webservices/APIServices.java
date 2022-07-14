@@ -142,7 +142,12 @@ public interface APIServices{
 
     // Desa
     @GET("Desa")
-    Call<WrappedListResponse<SubDistrict>> fetchSubDistrict();
+    Call<WrappedListResponse<SubDistrict>> fetchSubDistrict(
+            @Query("id_kecamatan") String id_kecamatan
+    );
+
+    @GET("Desa")
+    Call<WrappedListResponse<SubDistrict>> fetchSubDistrictAll();
 
     // Kecamatan
     @GET("Kecamatan")

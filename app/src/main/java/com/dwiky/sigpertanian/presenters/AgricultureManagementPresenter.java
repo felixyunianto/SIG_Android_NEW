@@ -24,9 +24,37 @@ public class AgricultureManagementPresenter implements AgricultureContracts.Agri
     }
 
     @Override
-    public void fetchSubDistrict() {
+    public void fetchSubDistrict(String id_kecamatan) {
         view.loading(true);
-        apiServices.fetchSubDistrict()
+        apiServices.fetchSubDistrict(id_kecamatan)
+                .enqueue(new Callback<WrappedListResponse<SubDistrict>>() {
+                    @Override
+                    public void onResponse(Call<WrappedListResponse<SubDistrict>> call, Response<WrappedListResponse<SubDistrict>> response) {
+                        if(response.isSuccessful()){
+                            WrappedListResponse body = response.body();
+                            if(body != null){
+                                view.toast(body.getPesan());
+                                view.attachSpinnerSubDistrict(body.getData());
+                            }else{
+                                view.toast("Error");
+                            }
+                        }
+                        view.loading(false);
+                    }
+
+                    @Override
+                    public void onFailure(Call<WrappedListResponse<SubDistrict>> call, Throwable t) {
+                        System.out.println("Terjadi kesalahan " + t.getMessage());
+                        view.loading(false);
+
+                    }
+                });
+    }
+
+    @Override
+    public void fetchSubDistrictAll() {
+        view.loading(true);
+        apiServices.fetchSubDistrictAll()
                 .enqueue(new Callback<WrappedListResponse<SubDistrict>>() {
                     @Override
                     public void onResponse(Call<WrappedListResponse<SubDistrict>> call, Response<WrappedListResponse<SubDistrict>> response) {
@@ -87,7 +115,7 @@ public class AgricultureManagementPresenter implements AgricultureContracts.Agri
                         if(response.isSuccessful()){
                             WrappedResponse body = response.body();
                             if(body != null){
-                                view.toast(body.getPesan());
+                                view.toast(body.getMessage());
                                 view.success();
                             }else{
                                 view.toast(body.getPesan());
@@ -115,7 +143,7 @@ public class AgricultureManagementPresenter implements AgricultureContracts.Agri
                         if(response.isSuccessful()){
                             WrappedResponse body = response.body();
                             if(body != null){
-                                view.toast(body.getPesan());
+                                view.toast(body.getMessage());
                                 view.success();
                             }else{
                                 view.toast(body.getPesan());

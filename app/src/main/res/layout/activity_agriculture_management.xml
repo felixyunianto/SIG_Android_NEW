@@ -43,11 +43,12 @@
         android:paddingHorizontal="16dp"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +82,7 @@
                 android:id="@+id/inNamaPemilik"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:hintEnabled="false">
 
@@ -122,7 +123,7 @@
                 android:id="@+id/inLuas"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:hintEnabled="false">
 
@@ -163,7 +164,7 @@
                 android:id="@+id/inMeter"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:hintEnabled="false">
 
@@ -176,47 +177,6 @@
                     android:maxLines="1"
                     android:paddingVertical="12dp"
                     android:textSize="12sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="Desa"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="*"
-                    android:textColor="#FF0000"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inSubDistrictSpinner"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:errorEnabled="true"
-                app:hintEnabled="false">
-
-                <AutoCompleteTextView
-                    android:id="@+id/subDistrictSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Pilih salah satu"
-                    android:inputType="none"
-                    android:textSize="12sp" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -246,7 +206,7 @@
                 android:id="@+id/inDistrictSpinner"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:hintEnabled="false">
 
@@ -259,6 +219,50 @@
                     android:textSize="12sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="Desa"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="*"
+                    android:textColor="#FF0000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inSubDistrictSpinner"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                app:errorEnabled="true"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/subDistrictSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Pilih salah satu"
+                    android:inputType="none"
+                    android:textSize="12sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -285,10 +289,20 @@
 
             <fragment
                 android:id="@+id/map"
-                android:layout_marginVertical="16dp"
                 class="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:layout_marginVertical="16dp" />
+
+            <TextView
+                android:id="@+id/errorLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Harap pilih lokasi"
+                android:textSize="12sp"
+                android:textColor="#FF0000"
+                android:paddingLeft="20dp"
+                android:visibility="gone"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnPickMap"
@@ -318,7 +332,8 @@
                     android:layout_marginBottom="5dp"
                     android:text="*"
                     android:textColor="#FF0000"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    />
             </LinearLayout>
 
             <ImageView
@@ -326,6 +341,16 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_baseline_image_24" />
+
+            <TextView
+                android:id="@+id/errorFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Harap pilih foto"
+                android:textSize="12sp"
+                android:textColor="#FF0000"
+                android:paddingLeft="20dp"
+                android:visibility="gone"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"

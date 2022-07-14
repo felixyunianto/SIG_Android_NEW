@@ -12,9 +12,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -265,6 +267,9 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
                 if(item instanceof District){
                     District district = (District) item;
                     selectedDistrict = district;
+
+                    presenter.fetchSubDistrict(district.getId());
+                    binding.inSubDistrictSpinner.setEnabled(true);
                 }
             }
         });
@@ -290,66 +295,78 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
             @Override
             public void onClick(View view) {
 
-                RequestBody namapemilik = RequestBody.create(
-                        MultipartBody.FORM, binding.etNamaPemilik.getText().toString().trim()
-                );
+                validNamaPemilik();
+                validLuas();
+                validMeter();
+                validDesa();
+                validKecamatan();
+                validPhoto();
+                validLocation();
 
-                RequestBody luas = RequestBody.create(
-                        MultipartBody.FORM, binding.etLuas.getText().toString().trim()
-                );
-
-                RequestBody meter = RequestBody.create(
-                        MultipartBody.FORM, binding.etMeter.getText().toString().trim()
-                );
-
-                RequestBody desa = RequestBody.create(
-                        MultipartBody.FORM, selectedSubDistrict != null ? selectedSubDistrict.toString() : agricultureData().getDesa()
-                );
-
-                RequestBody kecamatan = RequestBody.create(
-                        MultipartBody.FORM, selectedDistrict != null ? selectedDistrict.toString() : agricultureData().getKecamatan()
-                );
-
-                RequestBody reqLatitude = RequestBody.create(
-                        MultipartBody.FORM, latitude
-                );
-
-                RequestBody reqLongitude = RequestBody.create(
-                        MultipartBody.FORM, longitude
-                );
-
-                File originalFile = null;
-                RequestBody imagePart= null;
-                MultipartBody.Part foto= null;
-
-                if(imageUri != null){
-                    originalFile = new File(imageUri.getAbsolutePath());
-
-                    imagePart = RequestBody.create(
-                            MediaType.parse("image/*"),
-                            originalFile
+                if(validNamaPemilik() && validLuas() && validMeter() && validDesa() && validKecamatan() && validLocation() && validKecamatan()){
+                    RequestBody namapemilik = RequestBody.create(
+                            MultipartBody.FORM, binding.etNamaPemilik.getText().toString().trim()
                     );
 
-                    foto = MultipartBody.Part.createFormData(
-                            "foto",
-                            originalFile.getName(),
-                            imagePart
+                    RequestBody luas = RequestBody.create(
+                            MultipartBody.FORM, binding.etLuas.getText().toString().trim()
                     );
-                }
 
+                    RequestBody meter = RequestBody.create(
+                            MultipartBody.FORM, binding.etMeter.getText().toString().trim()
+                    );
 
-                if(isNew()){
-                    presenter.create(namapemilik,luas,meter,desa,kecamatan, reqLatitude,reqLongitude,foto);
-                }else{
-                    int idLahan = Integer.parseInt(agricultureData().getId_lahan());
-                    System.out.println("ID LAHAN " + idLahan);
-                    if(imageUri == null){
-                        presenter.updateWithoutPhoto(idLahan, namapemilik,luas,meter,desa,kecamatan, reqLatitude, reqLongitude);
-                    }else{
-                        presenter.update(idLahan, namapemilik,luas,meter,desa,kecamatan, reqLatitude,reqLongitude,foto );
+                    RequestBody desa = RequestBody.create(
+                            MultipartBody.FORM, selectedSubDistrict != null ? selectedSubDistrict.toString() : agricultureData().getDesa()
+                    );
+
+                    RequestBody kecamatan = RequestBody.create(
+                            MultipartBody.FORM, selectedDistrict != null ? selectedDistrict.toString() : agricultureData().getKecamatan()
+                    );
+
+                    RequestBody reqLatitude = RequestBody.create(
+                            MultipartBody.FORM, latitude
+                    );
+
+                    RequestBody reqLongitude = RequestBody.create(
+                            MultipartBody.FORM, longitude
+                    );
+
+                    File originalFile = null;
+                    RequestBody imagePart= null;
+                    MultipartBody.Part foto= null;
+
+                    if(imageUri != null){
+                        originalFile = new File(imageUri.getAbsolutePath());
+
+                        imagePart = RequestBody.create(
+                                MediaType.parse("image/*"),
+                                originalFile
+                        );
+
+                        foto = MultipartBody.Part.createFormData(
+                                "foto",
+                                originalFile.getName(),
+                                imagePart
+                        );
                     }
 
+
+                    if(isNew()){
+                        presenter.create(namapemilik,luas,meter,desa,kecamatan, reqLatitude,reqLongitude,foto);
+                    }else{
+                        int idLahan = Integer.parseInt(agricultureData().getId_lahan());
+                        System.out.println("ID LAHAN " + idLahan);
+                        if(imageUri == null){
+                            presenter.updateWithoutPhoto(idLahan, namapemilik,luas,meter,desa,kecamatan, reqLatitude, reqLongitude);
+                        }else{
+                            presenter.update(idLahan, namapemilik,luas,meter,desa,kecamatan, reqLatitude,reqLongitude,foto );
+                        }
+
+                    }
                 }
+
+
 
             }
         });
@@ -357,7 +374,8 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
 
     public void getData(){
         presenter.fetchDistrict();
-        presenter.fetchSubDistrict();
+        presenter.fetchSubDistrictAll();
+
     }
 
     @Override
@@ -433,5 +451,94 @@ public class AgricultureManagement extends AppCompatActivity implements Agricult
 
             myMap.isMyLocationEnabled();
 
+    }
+
+    public boolean validNamaPemilik() {
+        if(binding.etNamaPemilik.getText().toString().trim().isEmpty()){
+            binding.inNamaPemilik.setHelperText("Form ini harus disi");
+            binding.inNamaPemilik.setHelperTextColor(
+                    ColorStateList.valueOf(Color.RED)
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validLuas() {
+        if(binding.etLuas.getText().toString().trim().isEmpty()){
+            binding.inLuas.setHelperText("Form ini harus disi");
+            binding.inLuas.setHelperTextColor(
+                    ColorStateList.valueOf(Color.RED)
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validMeter() {
+        if(binding.etMeter.getText().toString().trim().isEmpty()){
+            binding.inMeter.setHelperText("Form ini harus disi");
+            binding.inMeter.setHelperTextColor(
+                    ColorStateList.valueOf(Color.RED)
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+    public boolean validDesa() {
+        if(isNew()){
+            if(selectedSubDistrict == null){
+                binding.inSubDistrictSpinner.setHelperText("Pilih salah satu Desa");
+                binding.inSubDistrictSpinner.setHelperTextColor(
+                        ColorStateList.valueOf(Color.RED)
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean validKecamatan() {
+        if(isNew()){
+            if(selectedDistrict == null){
+                binding.inDistrictSpinner.setHelperText("Pilih salah satu Kecamatan");
+                binding.inDistrictSpinner.setHelperTextColor(
+                        ColorStateList.valueOf(Color.RED)
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean validLocation() {
+        if(latitude == null && longitude == null){
+            binding.errorLocation.setVisibility(View.VISIBLE);
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validPhoto() {
+        if(imageUri == null && isNew()){
+            binding.errorFoto.setVisibility(View.VISIBLE);
+            return false;
+        }
+
+        return true;
     }
 }

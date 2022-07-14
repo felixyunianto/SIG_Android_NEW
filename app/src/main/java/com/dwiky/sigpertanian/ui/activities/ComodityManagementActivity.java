@@ -3,6 +3,8 @@ package com.dwiky.sigpertanian.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,6 +59,8 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
         });
 
         doSave();
+        if(isNew())binding.inSubDistrictSpinner.setEnabled(false);
+        else binding.inSubDistrictSpinner.setEnabled(true);
     }
 
     public void goBack() {
@@ -110,7 +114,9 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
 
     public void getData(){
         presenter.fetchDistrict();
-        presenter.fetchSubDistrict();
+        if(!isNew()){
+            presenter.fetchSubDistrictAll();
+        }
     }
 
     @Override
@@ -161,6 +167,9 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
                 if(item instanceof District){
                     District district = (District) item;
                     selectedDistrict = district;
+
+                    presenter.fetchSubDistrict(district.getId());
+                    binding.inSubDistrictSpinner.setEnabled(true);
                 }
             }
         });
@@ -187,25 +196,120 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
         presenter.destroy();
     }
 
+    public boolean validNamaKomoditas() {
+        if(binding.etNamaKomoditas.getText().toString().trim().isEmpty()){
+            binding.inNamaKomoditas.setHelperText("Form ini harus disi");
+            binding.inNamaKomoditas.setHelperTextColor(
+                    ColorStateList.valueOf(Color.RED)
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validNamaJumlah() {
+        if(binding.etJumlah.getText().toString().trim().isEmpty()){
+            binding.inJumlah.setHelperText("Form ini harus disi");
+            binding.inJumlah.setHelperTextColor(
+                    ColorStateList.valueOf(Color.RED)
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validAwal() {
+        if(binding.etAwal.getText().toString().trim().isEmpty()){
+            binding.inAwal.setHelperText("Form ini harus disi");
+            binding.inAwal.setHelperTextColor(
+                    ColorStateList.valueOf(Color.RED)
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validAkhir() {
+        if(binding.etAkhir.getText().toString().trim().isEmpty()){
+            binding.inAkhir.setHelperText("Form ini harus disi");
+            binding.inAkhir.setHelperTextColor(
+                    ColorStateList.valueOf(Color.RED)
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public boolean validDesa() {
+        if(isNew()){
+            if(selectedSubDistrict == null){
+                binding.inSubDistrictSpinner.setHelperText("Pilih salah satu Desa");
+                binding.inSubDistrictSpinner.setHelperTextColor(
+                        ColorStateList.valueOf(Color.RED)
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean validKecamatan() {
+        if(isNew()){
+            if(selectedDistrict == null){
+                binding.inDistrictSpinner.setHelperText("Pilih salah satu Kecamatan");
+                binding.inDistrictSpinner.setHelperTextColor(
+                        ColorStateList.valueOf(Color.RED)
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
     private void doSave(){
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String namakomoditas = binding.etNamaKomoditas.getText().toString().trim();
-                String jumlah = binding.etJumlah.getText().toString().trim();
-                String awal = Constants.converDateToSave(binding.etAwal.getText().toString().trim());
-                String akhir = Constants.converDateToSave(binding.etAkhir.getText().toString().trim());
-                String desa = selectedSubDistrict != null ? selectedSubDistrict.toString() : comodityData().getDesa();
-                String kecamatan = selectedDistrict != null ? selectedDistrict.toString() : comodityData().getKecamatan();
+                validNamaKomoditas();
+                validNamaJumlah();
+                validAwal();
+                validAkhir();
+                validDesa();
+                validKecamatan();
 
-                System.out.println("AWAL "+ awal);
-                System.out.println("AKHIR "+ akhir);
+                if(validKecamatan() && validNamaJumlah() && validAwal() && validAkhir() && validDesa() && validKecamatan() ){
+                    String namakomoditas = binding.etNamaKomoditas.getText().toString().trim();
+                    String jumlah = binding.etJumlah.getText().toString().trim();
+                    String awal = Constants.converDateToSave(binding.etAwal.getText().toString().trim());
+                    String akhir = Constants.converDateToSave(binding.etAkhir.getText().toString().trim());
+                    String desa = selectedSubDistrict != null ? selectedSubDistrict.toString() : comodityData().getDesa();
+                    String kecamatan = selectedDistrict != null ? selectedDistrict.toString() : comodityData().getKecamatan();
 
-                if(isNew()){
-                    presenter.create(namakomoditas, jumlah, awal, akhir, desa, kecamatan);
-                }else{
-                    presenter.update(comodityData().id_komoditas, namakomoditas, jumlah,awal, akhir,desa, kecamatan);
+                    System.out.println("AWAL "+ awal);
+                    System.out.println("AKHIR "+ akhir);
+
+                    if(isNew()){
+                        presenter.create(namakomoditas, jumlah, awal, akhir, desa, kecamatan);
+                    }else{
+                        presenter.update(comodityData().id_komoditas, namakomoditas, jumlah,awal, akhir,desa, kecamatan);
+                    }
                 }
+
             }
         });
 

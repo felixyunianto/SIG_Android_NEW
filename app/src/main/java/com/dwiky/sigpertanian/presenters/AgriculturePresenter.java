@@ -28,7 +28,7 @@ public class AgriculturePresenter implements AgricultureContracts.AgriculturePre
                         if(response.isSuccessful()){
                             WrappedListResponse body = response.body();
                             if(body != null){
-                                view.toast(body.getPesan());
+                                view.toast(body.getMessage());
                                 view.attachToRecyclerView(body.getData());
                             }else{
                                 view.toast("Error");
@@ -55,7 +55,7 @@ public class AgriculturePresenter implements AgricultureContracts.AgriculturePre
                         if(response.isSuccessful()){
                             WrappedListResponse body = response.body();
                             if(body != null){
-                                view.toast(body.getPesan());
+                                view.toast(body.getMessage());
                                 view.attachDetailView((Agriculture) body.getData().get(0));
                             }else{
                                 view.toast("Error");
