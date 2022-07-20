@@ -35,6 +35,7 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
     ComodityManagementPresenter presenter;
     SubDistrict selectedSubDistrict;
     District selectedDistrict;
+    String selectedComodityName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +120,30 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
         }
     }
 
+    public void attachToSpinnerComodityName() {
+        ArrayAdapter comodityNameSpinner = new ArrayAdapter(this, R.layout.spinner_item, getResources().getStringArray(R.array.comodity));
+        binding.etNamaKomoditas.setAdapter(comodityNameSpinner);
+
+        binding.etNamaKomoditas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedComodityName = adapterView.getItemAtPosition(i).toString();
+            }
+        });
+
+        if(!isNew()){
+
+            selectedComodityName = comodityData().namakomoditas;
+        }
+
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         getData();
+        attachToSpinnerComodityName();
     }
 
     @Override
@@ -197,7 +218,7 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
     }
 
     public boolean validNamaKomoditas() {
-        if(binding.etNamaKomoditas.getText().toString().trim().isEmpty()){
+        if(selectedComodityName == null){
             binding.inNamaKomoditas.setHelperText("Form ini harus disi");
             binding.inNamaKomoditas.setHelperTextColor(
                     ColorStateList.valueOf(Color.RED)
@@ -293,7 +314,7 @@ public class ComodityManagementActivity extends AppCompatActivity implements Com
                 validKecamatan();
 
                 if(validKecamatan() && validNamaJumlah() && validAwal() && validAkhir() && validDesa() && validKecamatan() ){
-                    String namakomoditas = binding.etNamaKomoditas.getText().toString().trim();
+                    String namakomoditas = selectedComodityName.toString();
                     String jumlah = binding.etJumlah.getText().toString().trim();
                     String awal = Constants.converDateToSave(binding.etAwal.getText().toString().trim());
                     String akhir = Constants.converDateToSave(binding.etAkhir.getText().toString().trim());

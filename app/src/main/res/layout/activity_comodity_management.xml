@@ -79,22 +79,22 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inNamaKomoditas"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
-
                 app:hintEnabled="false">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/etNamaKomoditas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Masukan nama komoditas"
-                    android:inputType="text"
-                    android:maxLines="1"
+                    android:hint="Pilih Nama Komoditas"
                     android:paddingVertical="12dp"
-                    android:textSize="12sp" />
+                    android:inputType="none"
+                    android:completionThreshold="1"
+                    android:textSize="12sp"
+                    android:paddingLeft="20dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

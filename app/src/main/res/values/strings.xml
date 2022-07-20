@@ -14,4 +14,22 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string-array name="comodity">
+        <item>Padi</item>
+        <item>Kedelai</item>
+        <item>Bawang Merah</item>
+        <item>Bawang Putih</item>
+        <item>Cabai Merah</item>
+        <item>Cabai Hijau</item>
+        <item>Cabai Rawit</item>
+        <item>Tomat</item>
+        <item>Terong</item>
+        <item>Kentang</item>
+        <item>Kacang Panjang</item>
+        <item>Kacang Tanah</item>
+        <item>Pare</item>
+        <item>Mentimun</item>
+        <item>Jahe</item>
+    </string-array>
 </resources>
