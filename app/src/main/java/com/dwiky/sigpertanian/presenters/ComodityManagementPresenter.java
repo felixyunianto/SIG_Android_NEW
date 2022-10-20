@@ -112,6 +112,7 @@ public class ComodityManagementPresenter implements ComodityContracts.ComodityMa
                 .enqueue(new Callback<WrappedResponse<Comoditas>>() {
                     @Override
                     public void onResponse(Call<WrappedResponse<Comoditas>> call, Response<WrappedResponse<Comoditas>> response) {
+                        System.out.println("SUCCESS " + response.body());
                         if(response.isSuccessful()){
                             WrappedResponse body = response.body();
                             if(body != null){
@@ -121,6 +122,7 @@ public class ComodityManagementPresenter implements ComodityContracts.ComodityMa
                                 view.toast(body.getPesan());
                             }
                         }else{
+                            System.out.println("RESPONSE " + response.message());
                             view.toast(response.message());
                         }
                         view.loading(false);
